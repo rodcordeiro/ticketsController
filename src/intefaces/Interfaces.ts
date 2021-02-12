@@ -4,7 +4,6 @@ interface Tech{}
 interface Location{}
 interface Ticket{}
 interface Contact{}
-interface Equipment{}
 interface Service{}
 
 
@@ -15,6 +14,5 @@ export {
     Location,
     Ticket,
     Contact,
-    Equipment,
     Service
 }
