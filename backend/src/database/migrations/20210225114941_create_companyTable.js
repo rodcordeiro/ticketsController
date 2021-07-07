@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable('companies',(table)=>{
-      table.increments('company_id').primary();
+      table.string('company_id').primary();
       table.string('name').notNullable();
       table.string('currency').notNullable();
   })

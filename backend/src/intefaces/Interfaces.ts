@@ -12,11 +12,6 @@ interface iLocation{
     client_id: number;
 }
 interface iTicket{}
-interface iCompany{
-    company_id?: number;
-    name: string;
-    currency: string;
-}
 interface iContact{}
 interface iService{}
 

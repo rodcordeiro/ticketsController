@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable('contacts',(table)=>{
-      table.increments('contact_id').primary();
+      table.string('contact_id').primary();
       table.string('name').notNullable();
       table.string('email').notNullable();
       table.string('phone').notNullable();

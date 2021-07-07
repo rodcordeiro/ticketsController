@@ -1,7 +1,7 @@
 
 exports.up = function(knex) {
   return knex.schema.createTable('clients',(table)=>{
-      table.increments('client_id').primary();
+      table.string('client_id').primary();
       table.string('name').notNullable();
       table.string('company_id').notNullable();
       table.foreign('company_id').references('companies.company_id');
