@@ -4,6 +4,8 @@ interface iCompany{
     company_id?: number;
     name: string;
     currency: string;
+    created_at?: Date;
+    updated_at?: Date;
 }
 
 class CompanyService {

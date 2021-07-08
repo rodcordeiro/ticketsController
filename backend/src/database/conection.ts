@@ -1,7 +1,8 @@
 const knex = require('knex');
 const configuration = require('../../knexfile');
+import dotenv from 'dotenv'
+dotenv.config()
 
-const config = process.env.NODE_ENV == "production" ? configuration.production : configuration.development
-const connection = knex(config);
+const connection = knex(configuration[process.env.NODE_ENV]);
 
 export default connection;

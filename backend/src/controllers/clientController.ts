@@ -1,61 +1,44 @@
-import { iClient } from '../intefaces/Interfaces'
-import connection from '../database/conection'
 import { Request, Response } from 'express';
+import { ClientServices, iClient } from '../Services/Clients';
 
-const responseHandlers = {
-    async createClient(req: Request, res: Response){
-        const client = req.body
-        const newClient = await clientHandler.add(client)
-        if(newClient.status){
-            return res.status(201).json(newClient.id)
-        } else {
-            return res.status(400).json(newClient.error)
-        }
-        
-    },
-}
-const clientHandler = {
-    async add(client: iClient){
-        const company = await connection('companies')
-            .select('*')
-            .where('company_id',client.company_id)
-            .first()
+class ClientController{
+    async index(req: Request, res: Response){
+        const services = new ClientServices();
+        await services.listClients()
             .then((response: any)=>{
-                return response;
+                return res.status(200).json(response)
             })
-        if(!company){
-            return {
-                status: false,
-                error: "Invalid company id"
-            }
+            .catch(error =>{
+                return res.status(error.statusCode).json(error)
+            })
+    }
+    async create(req: Request, res: Response){
+        const services = new ClientServices();
+        const {name, company_id} = req.body;
+        if(!company_id){
+            return res.status(400).json("company_id token missing")
         }
-        return await connection('clients')
-            .insert(client)
-            .then((response: any) =>{
-                return {status: true, id: response}
+        await services.create({name, company_id})
+            .then((response: any)=>{
+                return res.status(201).json(response)
             })
-            .catch((error: any)=>{
-                return {status: false,error}
+            .catch(error =>{
+                return res.status(error.statusCode).json(error)
             })
-    },
-    async getAll(){
-        return await connection('clients')
-            .select('*')
-            .then((response: any) =>{
-                return response
+    }
+    async delete(req: Request, res: Response){
+        const services = new ClientServices();
+        const {id} = req.body;
+
+        await services.delete(id)
+            .then(response=>{
+                return res.status(204).send()
             })
-    },
-    async getClient(client_id: number){
-        return await connection('clients')
-            .select('*')
-            .where('client_id',client_id)
-            .first()
-            .then((response: any) =>{
-                return response
+            .catch(error =>{
+                return res.status(error.statusCode).json(error)
             })
     }
 }
 export {
-    responseHandlers,
-    clientHandler
+    ClientController
 }
