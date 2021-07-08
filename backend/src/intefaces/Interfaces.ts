@@ -12,8 +12,6 @@ interface iService{}
 
 
 export {
-    iClient,
-    iCompany,
     iTech,
     iLocation,
     iTicket,
