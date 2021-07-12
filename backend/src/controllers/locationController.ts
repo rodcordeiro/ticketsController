@@ -1,45 +1,29 @@
-import { iLocation } from '../intefaces/Interfaces'
-import connection from '../database/conection'
 import { Request, Response } from 'express';
+import { LocationServices, iLocation } from '../Services/Location'
 
-const responseHandlers = {
-    async createLocation(req: Request, res: Response){
-        const location = req.body
-        const newLoc = await locationHandler.add(location)
-        if(newLoc.status){
-            return res.status(201).json(newLoc.id)
-        } else {
-            return res.status(400).json(newLoc.error)
-        }
-        
-    },
-}
-const locationHandler = {
-    async add(location: iLocation){
-        const client = await connection('clients')
-            .select('*')
-            .where('client_id',location.client_id)
-            .first()
-            .then((response: any)=>{
-                return response;
+class LocationController{
+    async index(req: Request, res: Response){
+        const services = new LocationServices()
+        await services.list()
+            .then(response=>{
+                return res.status(200).json(response)
             })
-        if(!client){
-            return {
-                status: false,
-                error: "Invalid client id"
-            }
-        }
-        return await connection('locations')
-            .insert(location)
-            .then((response: any) =>{
-                return {status: true, id: response}
+            .catch(error=>{
+                return res.status(error.statusCode).json(error.error)
             })
-            .catch((error: any)=>{
-                return {status: false,error}
+    }
+    async create(req: Request, res: Response){
+        const services = new LocationServices()
+        const {name, address, city, state, client_id} = req.body
+        await services.create(name, address, city, state, client_id)
+            .then(response=>{
+                return res.status(200).json(response)
+            })
+            .catch(error=>{
+                return res.status(error.statusCode).json(error.error)
             })
     }
 }
 export {
-    responseHandlers,
-    locationHandler
+    LocationController
 }

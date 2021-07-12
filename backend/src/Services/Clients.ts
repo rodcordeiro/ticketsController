@@ -2,7 +2,7 @@ import connection from '../database/conection';
 import { v4 as uuid } from 'uuid';
 
 interface iClient{
-    client_id?: number;
+    client_id?: string;
     name: string;
     company_id: number;
     created_at?: Date;
@@ -101,6 +101,41 @@ class ClientServices {
                     error
                 })
             }
+        })
+    }
+    async findById(client_id: string){
+        return new Promise(async (resolve,reject)=>{
+            try{
+                await connection("clients")
+                    .select("*")
+                    .where({client_id})
+                    .then((response: any)=>{
+                        if(response.length != 0) {
+                            
+                            resolve(response)
+                            
+                        }
+                        reject({
+                            statusCode: 400,
+                            error:"invalid client id"
+                        })
+                        console.log({response})
+                        console.log(response.length)
+                        
+                    })
+                    .catch((error:any)=>{
+                        reject({
+                            statusCode: 400,
+                            error
+                        })
+                    })
+            }catch(error){
+                reject({
+                    statusCode: 500,
+                    error
+                })
+            }
+            
         })
     }
 }

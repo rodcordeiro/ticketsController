@@ -25,11 +25,12 @@ class CompanyService {
                         })
                     })
             } catch(e){
-                throw new Error(e)
                 reject({
                     statusCode: 500,
                     error: e
                 })
+                throw new Error(e)
+                
             }
         })
     }
@@ -40,9 +41,36 @@ class CompanyService {
                 .then((response:Array<iCompany>)=>{
                     resolve(response)
                 })
-                .catch((e:any)=>{
-                    reject(e)
+                .catch((e: any)=>{
+                    reject({
+                        statusCode: 400,
+                        error: e
+                    })
                 })
+        })
+    }
+    async delete(company_id : string){
+        return new Promise(async (resolve, reject)=>{
+            try{
+                await connection('companies')
+                    .where({company_id})
+                    .delete()
+                    .then((response: any)=>{
+                        resolve("")
+                    })
+                    .catch((e: any)=>{
+                        reject({
+                            statusCode: 400,
+                            error: e
+                        })
+                    })
+            } catch(e){
+                reject({
+                    statusCode: 500,
+                    error: e
+                })
+                throw new Error(e)
+            }
         })
     }
 }
