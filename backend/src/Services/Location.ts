@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import connection from '../database/conection'
 import { ClientServices } from './Clients';
 
@@ -39,15 +40,37 @@ class LocationServices{
     async create(name: string, address: string, city: string, state: string, client_id: string){
         return new Promise(async (resolve,reject)=>{
             try{
-                const client = new ClientServices().findById(client_id)
-                    .then((response) => response)
-                    .catch(error=>{
+                const cservices = new ClientServices()
+                const client = await cservices.findById(client_id)
+                    .then((response) => {
+                        return response;
+                    })
+                    .catch((error)=>{
                         reject({
-                            statusCode: 400,
+                            statusCode:400,
                             error
                         })
                     })
-                resolve(client)
+                
+                const loc_id = uuid();
+                await connection("locations")
+                    .insert({name, address, city, state, client_id,loc_id})
+                    .then((response: any) => {
+                        resolve({
+                            loc_id,
+                            name,
+                            address,
+                            city,
+                            state
+                        })
+                    })
+                    .catch((error: any)=>{
+                        reject({
+                            statusCode:400,
+                            error
+                        })
+                    })
+                
             } catch(error){
                 reject({
                     statusCode: 500,
@@ -57,6 +80,30 @@ class LocationServices{
             } 
         })
         
+    }
+    async delete(loc_id: string){
+        return new Promise( async (resolve,reject) : Promise<any>=>{
+            try{
+                await connection("locations")
+                    .where({loc_id})
+                    .first()
+                    .delete()
+                    .then((response : ResponseType) => {
+                        resolve("")
+                    })
+                    .catch((error : ResponseType)=>{
+                        reject({
+                            statusCode:400,
+                            error
+                        })
+                    })
+            } catch(error){
+                reject({
+                    statusCode: 500,
+                    error
+                })
+            }
+        })
     }
 }
 export {

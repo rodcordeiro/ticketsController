@@ -103,31 +103,21 @@ class ClientServices {
             }
         })
     }
-    async findById(client_id: string){
-        return new Promise(async (resolve,reject)=>{
+    async findById(client_id: string) : Promise<iClient>{
+        return new Promise(async (resolve,reject) =>{
             try{
                 await connection("clients")
                     .select("*")
                     .where({client_id})
                     .then((response: any)=>{
-                        if(response.length != 0) {
-                            
-                            resolve(response)
-                            
+                        if(response.length > 0) {
+                           resolve(response)
+                        } else {
+                            reject("invalid client id")
                         }
-                        reject({
-                            statusCode: 400,
-                            error:"invalid client id"
-                        })
-                        console.log({response})
-                        console.log(response.length)
-                        
                     })
                     .catch((error:any)=>{
-                        reject({
-                            statusCode: 400,
-                            error
-                        })
+                        reject(error)
                     })
             }catch(error){
                 reject({

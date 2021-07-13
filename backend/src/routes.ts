@@ -23,6 +23,7 @@ routes.delete('/client',clients.delete)
 
 routes.get('/location',location.index)
 routes.post('/location',location.create)
+routes.delete('/location/:loc_id',location.delete)
 
 
 export default routes;
