@@ -10,39 +10,35 @@ module.exports = {
     migrations:{
       directory: "./src/database/migrations"
     },
+    seeds:{
+      directory: "./src/database/seeds"
+    },
     useNullAsDefault: true
   },
 
-  staging: {
-    client: 'postgresql',
+  test: {
+    client: 'sqlite3',
     connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
+      filename: './src/database/test.sqlite3'
     },
-    pool: {
-      min: 2,
-      max: 10
+    migrations:{
+      directory: "./src/database/migrations"
     },
-    migrations: {
-      tableName: 'knex_migrations'
-    }
+    seeds:{
+      directory: "./src/database/seeds"
+    },
+    useNullAsDefault: true
   },
 
   production: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user:     'username',
-      password: 'password'
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    client: 'pg',
+    connection: `${process.env.DATABASE_URL}?ssl=true`,
     migrations: {
-      tableName: 'knex_migrations'
-    }
+      directory: './src/database/migrations'
+    },
+    seeds: {
+      directory: './src/database/seeds/'
+    },
+    useNullAsDefault: true
   }
-
 };
