@@ -43,8 +43,6 @@
   },
   "jest": {
     "clearMocks": true,
-    "collectCoverage": true,
-    "coverageDirectory": "coverage",
     "rootDir": "./tests",
     "testEnvironmentOptions": {
       "NODE_ENV": "test",
