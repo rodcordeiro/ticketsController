@@ -3,7 +3,7 @@ const configuration = require('../../knexfile');
 const connection = knex(configuration[process.env.NODE_ENV]);
 
 describe("Simple test",()=>{
-    beforeEach(async () => {
+    beforeAll(async () => {
         await connection.migrate.latest();
     });
     
