@@ -25,7 +25,7 @@ class CompaniesController{
     }
     async delete(req: Request, res: Response){
         const services = new CompanyService()
-        const { id } = req.body
+        const { id } = req.params
         if (!id) return res.status(400).json({error: "You must provide the company ID"})
         await services.delete(id)
             .then((response: any)=>{

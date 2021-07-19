@@ -15,11 +15,11 @@ routes.get('/',(req,res)=>{
 
 routes.get('/companies',companies.index)
 routes.post('/companies',companies.create)
-routes.delete('/companies',companies.delete)
+routes.delete('/companies/:id',companies.delete)
 
 routes.get('/client',clients.index)
 routes.post('/client',clients.create)
-routes.delete('/client',clients.delete)
+routes.delete('/client/:id',clients.delete)
 
 routes.get('/location',location.index)
 routes.post('/location',location.create)

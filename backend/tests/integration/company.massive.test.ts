@@ -6,49 +6,8 @@ import faker from 'faker';
 import { UuidRegex } from '../utils/uuidRegex'
 import { iCompany } from '../../src/Services/Company'
 
-    
-describe("Company creation, update and delete using routes",()=>{
-    beforeAll(async () => {
-        await connection.migrate.latest();
-    });
 
-    afterAll(async () => {
-        await connection.migrate.rollback();
-    })
-    
-
-    let company : iCompany= { 
-        name: "Test",
-        currency: "USD"
-    };
-    
-    it("should create a new company", async ()=>{
-        const response = await supertest(app).post('/companies').send(company);
-        
-        company["company_id"] = response.body.company_id;
-        
-        expect(response.body).toHaveProperty("company_id");
-        expect(response.body.company_id).toMatch(UuidRegex);
-    })
-
-    it("should return companies list",async ()=>{
-        const response = await supertest(app).get('/companies');
-
-        expect(response.body).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining(company)
-            ])
-        )
-    })
-
-    it("should delete the company", async ()=>{
-        const response = await supertest(app).delete('/companies').send({
-            id: company.company_id
-        });
-        
-        expect(response.status).toBe(204);
-    })
-})
+const TEST_LENGTH = 5
 
 describe("Massive companies test",()=>{
     
@@ -62,7 +21,7 @@ describe("Massive companies test",()=>{
     
     let companies :Array<iCompany> = []
     
-    for(let i = 0; i <=50;i++){
+    for(let i = 0; i <= TEST_LENGTH;i++){
         
         let company : iCompany= { 
             name: faker.company.companyName(),

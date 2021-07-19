@@ -28,7 +28,7 @@ class ClientController{
     }
     async delete(req: Request, res: Response){
         const services = new ClientServices();
-        const {id} = req.body;
+        const { id } = req.params;
 
         await services.delete(id)
             .then(response=>{
