@@ -5,6 +5,8 @@ import { v4 as uuid } from 'uuid';
 
 const cript = new Cript();
 
+const secret = process.env.APP_SECRET || "secret"
+
 interface iUser{
     user_id?: string;
     name?: string;
@@ -137,8 +139,8 @@ class UserService{
         })
     }
 
-    private async signin(id : string, isAdmin: boolean){
-        return jwt.sign({id,isAdmin},process.env.APP_SECRET,{expiresIn:"15 days"});
+    private async signin(id : any, isAdmin: any){
+        return jwt.sign({id,isAdmin},secret,{expiresIn:"15 days"});
     }
     async findById(contact_id: string) : Promise<iUser>{
         return new Promise(async (resolve,reject) =>{

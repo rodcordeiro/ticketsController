@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import connection from '../database/conection'
-import { iContact } from '../intefaces/Interfaces';
+import { iContact } from './Contact';
 import { ClientServices } from './Clients';
 
 interface iLocation{

@@ -14,7 +14,7 @@ export default class Cript{
             throw new Error(err)
         })
     }
-    async compare(password: string, hashed: string){
+    async compare(password: string, hashed: any){
         password = await this.hash(password)
         
         return await compare(password, hashed)
