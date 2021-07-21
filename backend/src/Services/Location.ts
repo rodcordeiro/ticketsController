@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import connection from '../database/conection'
+import { iContact } from '../intefaces/Interfaces';
 import { ClientServices } from './Clients';
 
 interface iLocation{
@@ -103,6 +104,34 @@ class LocationServices{
                     error
                 })
             }
+        })
+    }
+    async findById(loc_id: string) : Promise<iContact>{
+        return new Promise(async (resolve,reject) =>{
+            try{
+                await connection("locations")
+                    .select("*")
+                    .where({loc_id})
+                    .then((response: any)=>{
+                        if(response.length > 0) {
+                           resolve(response)
+                        } else {
+                            reject({statusCode:400,error:"invalid location id"})
+                        }
+                    })
+                    .catch((error:any)=>{
+                        reject({
+                            statusCode: 500,
+                            error
+                        })
+                    })
+            }catch(error){
+                reject({
+                    statusCode: 500,
+                    error
+                })
+            }
+            
         })
     }
 }
